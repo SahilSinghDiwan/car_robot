@@ -40,6 +40,7 @@ Here’s a simple and easy-to-understand connection chart for an Arduino Uno wit
 
 - **Battery Positive (+)** >> **Motor Driver VCC Pin (or 5V Pin on Arduino if you are powering Arduino from the same battery)**
 - **Battery Negative (−)** >> **Motor Driver GND Pin (and also connect to Arduino GND)**
+- **Barrel Connector** >> **Arduino**
 
   The battery powers both the Arduino and the motor driver, as well as other components.
 
