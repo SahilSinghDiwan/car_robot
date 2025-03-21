@@ -12,7 +12,10 @@ AccelStepper stepper(MotorInterfaceType, 2, 7, 4, 8);
 int stepperMaxSpeed = 1000;       // Max speed for stepper motor
 int stepperAcceleration = 50;     // Acceleration for smoother movement
 int stepperSpeed = 200;           // Stepper rotation speed
-int stepsPer180Degrees = 2038;    // Adjust this based on actual stepper specs
+// Define motor settings
+const int stepsPerRevolution = 2038;  // Adjust based on your motor's specification
+const int stepsPer180Degrees = stepsPerRevolution / 2; // Half rotation (180 degrees)
+
 
 int leftMotorPin1 = 5;
 int leftMotorPin2 = 6;
@@ -22,10 +25,10 @@ int rightMotorPin1 = 9;
 int rightMotorPin2 = 10;
 int rightMotorSpeedPin = 11;
 
-int leftMotorSpeed = 200;         // Speed for left motor (0-255)
-int rightMotorSpeed = 150;        // Speed for right motor (0-255)
-unsigned long travelTime = 3000;  // Time (ms) the car moves before stopping
-unsigned long pauseTime = 1000;   // Pause delay (ms) after stepper rotation
+int leftMotorSpeed = 160;         // Speed for left motor (0-255)
+int rightMotorSpeed = 160;        // Speed for right motor (0-255)
+unsigned long travelTime = 1250;  // Time (ms) the car moves before stopping
+unsigned long pauseTime = 10;   // Pause delay (ms) after stepper rotation
 int numberOfCycles = 9;           // Number of cycles to run
 
 // -----------------------
@@ -55,6 +58,7 @@ void stopCar() {
 // Stepper Motor Function
 // -----------------------
 void rotateStepperMotor() {
+  delay(500); // Short pause after rotation
   stepper.moveTo(stepper.currentPosition() + stepsPer180Degrees);
   while (stepper.distanceToGo() != 0) {
     stepper.run();
