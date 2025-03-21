@@ -1,27 +1,38 @@
-// Include the AccelStepper Library
 #include <AccelStepper.h>
 
-// Define step constant
-#define MotorInterfaceType 4
+// Define stepper motor connection pins
+const int stepperPin1 = 2;
+const int stepperPin2 = 7;
+const int stepperPin3 = 4;
+const int stepperPin4 = 8;
 
-// Creates an instance
-// Pins entered in sequence IN1-IN3-IN2-IN4 for proper step sequence
-AccelStepper myStepper(MotorInterfaceType, 2, 7, 4, 8);
+// Define stepper motor using 4-wire configuration
+AccelStepper stepper(AccelStepper::FULL4WIRE, stepperPin1, stepperPin2, stepperPin3, stepperPin4);
+
+// Define motor settings
+const int stepsPerRevolution = 2038;  // Adjust based on your motor's specification
+const int stepsPer180Degrees = stepsPerRevolution / 2; // Half rotation (180 degrees)
 
 void setup() {
-	// set the maximum speed, acceleration factor,
-	// initial speed and the target position
-	myStepper.setMaxSpeed(1000.0);
-	myStepper.setAcceleration(50.0);
-	myStepper.setSpeed(200);
-	myStepper.moveTo(2038);
+  Serial.begin(9600);
+  
+  // Configure motor settings
+  stepper.setMaxSpeed(1000);      // Max speed in steps per second
+  stepper.setAcceleration(50);    // Acceleration in steps per second^2
+
+  Serial.println("Rotating stepper motor 180 degrees...");
+
+  // Move the motor 180 degrees
+  stepper.moveTo(stepsPer180Degrees);
+
+  // Continue rotating until the target position is reached
+  while (stepper.distanceToGo() != 0) {
+    stepper.run();
+  }
+
+  Serial.println("Rotation complete.");
 }
 
 void loop() {
-	// Change direction once the motor reaches target position
-	if (myStepper.distanceToGo() == 0) 
-		myStepper.moveTo(-myStepper.currentPosition());
-
-	// Move the motor one step
-	myStepper.run();
+  // No actions in loop
 }
