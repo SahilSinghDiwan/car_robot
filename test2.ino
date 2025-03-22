@@ -29,26 +29,19 @@ int rightMotorSpeedPin = 11;
 int leftMotorSpeed = 160;       
 int rightMotorSpeed = 160;        
 
-// Movement time and rotation degrees for each stop
-unsigned long movementTimes[10] = {1250, 1250, 1250, 1250, 1250, 1250, 1250, 1250, 1250, 1250};
-// Change the travel time according to overshoot and undershoot of the robot
-int stepperRotationDegrees[10] = {180, 180, 180, 180, 180, 180, 180, 180, 180, 180};
-// change the stepper rotation according to overshoot and undershoot of the stepper
-
-// Pause time after each stop
 unsigned long pauseTime = 500;
 
 // -----------------------
 // Motor Control Functions
 // -----------------------
-void moveForward(int leftSpeed, int rightSpeed) {
+void moveForward() {
   digitalWrite(leftMotorPin1, HIGH);
   digitalWrite(leftMotorPin2, LOW);
   digitalWrite(rightMotorPin1, HIGH);
   digitalWrite(rightMotorPin2, LOW);
 
-  analogWrite(leftMotorSpeedPin, leftSpeed);
-  analogWrite(rightMotorSpeedPin, rightSpeed);
+  analogWrite(leftMotorSpeedPin, leftMotorSpeed);
+  analogWrite(rightMotorSpeedPin, rightMotorSpeed);
 }
 
 void stopCar() {
@@ -90,28 +83,108 @@ void setup() {
   stepper.setAcceleration(stepperAcceleration);
   stepper.setSpeed(stepperSpeed);
 
-  // Perform 10 Stops
-  for (int i = 0; i < 10; i++) {
-    Serial.print("Stop ");
-    Serial.print(i + 1);
-    Serial.println(": Car moving forward...");
+  // delay of 4 seconds for testing if the code is working or not
+  delay(4000);
 
-    moveForward(leftMotorSpeed, rightMotorSpeed);
-    delay(movementTimes[i]);
-    
-    stopCar();
-    Serial.println("Car stopped. Rotating stepper motor...");
-
-    rotateStepperMotor(stepperRotationDegrees[i]);
-
-    Serial.print("Pausing for ");
-    Serial.print(pauseTime);
-    Serial.println(" ms before next stop.");
-    delay(pauseTime);
-  }
-
+  // First stop
+  Serial.println(": Car moving forward...");
+  moveForward();
+  delay(1250);
   stopCar();
-  Serial.println("All stops completed. System halted.");
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Second Stop
+  Serial.println(": Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Third Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Fourth Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Fifth Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Sixth Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Seventh Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Eighth Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Ninth Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
+
+  // Final Stop
+  Serial.println("Car moving forward...");
+  moveForward();
+  delay(1250);
+  stopCar();
+  delay(500);
+  Serial.println("Car stopped. Rotating stepper motor...");
+  rotateStepperMotor(180);
+  delay(500);
 }
 
 void loop() {
