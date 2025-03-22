@@ -34,14 +34,14 @@ int numberOfCycles = 9;           // Number of cycles to run
 // -----------------------
 // Motor Control Functions
 // -----------------------
-void moveForward(int leftSpeed, int rightSpeed) {
+void moveForward() {
   digitalWrite(leftMotorPin1, HIGH);
   digitalWrite(leftMotorPin2, LOW);
   digitalWrite(rightMotorPin1, HIGH);
   digitalWrite(rightMotorPin2, LOW);
 
-  analogWrite(leftMotorSpeedPin, leftSpeed);
-  analogWrite(rightMotorSpeedPin, rightSpeed);
+  analogWrite(leftMotorSpeedPin, leftMotorSpeed);
+  analogWrite(rightMotorSpeedPin, rightMotorSpeed);
 }
 
 void stopCar() {
