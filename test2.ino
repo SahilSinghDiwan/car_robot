@@ -1,10 +1,12 @@
+// Include the AccelStepper Library
 #include <AccelStepper.h>
 
-// -----------------------
-// Stepper Motor Configuration
-// -----------------------
+// Define step constant
 #define MotorInterfaceType 4
-AccelStepper stepper(MotorInterfaceType, 2, 7, 4, 8);
+
+// Creates an instance
+// Pins entered in sequence IN1-IN3-IN2-IN4 for proper step sequence
+AccelStepper myStepper(MotorInterfaceType, 2, 7, 4, 8);
 
 // -----------------------
 // Adjustable Parameters
@@ -15,6 +17,7 @@ int stepperSpeed = 200;           // Stepper rotation speed
 
 // Define motor settings
 const int stepsPerRevolution = 2038;  // Adjust based on your motor's specification
+const int stepsPer180Degrees = stepsPerRevolution / 2; // Half rotation (180 degrees)
 
 // Motor pins
 int leftMotorPin1 = 5;
@@ -58,12 +61,10 @@ void stopCar() {
 // Stepper Motor Function
 // -----------------------
 void rotateStepperMotor(int rotationDegrees) {
-  int steps = (rotationDegrees * stepsPerRevolution) / 360;
-  stepper.moveTo(stepper.currentPosition() + steps);
-  while (stepper.distanceToGo() != 0) {
-    stepper.run();
-  }
-  delay(500); 
+  int steps = stepsPer180Degrees * rotationDegrees / 180;
+	myStepper.moveTo(steps);
+	// Move the motor one step
+	myStepper.run();
 }
 
 // -----------------------
@@ -79,10 +80,9 @@ void setup() {
   pinMode(leftMotorSpeedPin, OUTPUT);
   pinMode(rightMotorSpeedPin, OUTPUT);
 
-  stepper.setMaxSpeed(stepperMaxSpeed);
-  stepper.setAcceleration(stepperAcceleration);
-  stepper.setSpeed(stepperSpeed);
-
+  myStepper.setMaxSpeed(1000.0);
+  myStepper.setAcceleration(50.0);
+  myStepper.setSpeed(200);
   // delay of 4 seconds for testing if the code is working or not
   delay(4000);
 
