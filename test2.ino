@@ -1,12 +1,10 @@
-// Include the AccelStepper Library
 #include <AccelStepper.h>
 
-// Define step constant
+// -----------------------
+// Stepper Motor Configuration
+// -----------------------
 #define MotorInterfaceType 4
-
-// Creates an instance
-// Pins entered in sequence IN1-IN3-IN2-IN4 for proper step sequence
-AccelStepper myStepper(MotorInterfaceType, 2, 7, 4, 8);
+AccelStepper stepper(MotorInterfaceType, 2, 7, 4, 8);
 
 // -----------------------
 // Adjustable Parameters
@@ -14,12 +12,11 @@ AccelStepper myStepper(MotorInterfaceType, 2, 7, 4, 8);
 int stepperMaxSpeed = 1000;       // Max speed for stepper motor
 int stepperAcceleration = 50;     // Acceleration for smoother movement
 int stepperSpeed = 200;           // Stepper rotation speed
-
 // Define motor settings
 const int stepsPerRevolution = 2038;  // Adjust based on your motor's specification
 const int stepsPer180Degrees = stepsPerRevolution / 2; // Half rotation (180 degrees)
 
-// Motor pins
+
 int leftMotorPin1 = 5;
 int leftMotorPin2 = 6;
 int leftMotorSpeedPin = 3;
@@ -28,23 +25,23 @@ int rightMotorPin1 = 9;
 int rightMotorPin2 = 10;
 int rightMotorSpeedPin = 11;
 
-// Speed and timing
-int leftMotorSpeed = 160;       
-int rightMotorSpeed = 160;        
-
-unsigned long pauseTime = 500;
+int leftMotorSpeed = 160;         // Speed for left motor (0-255)
+int rightMotorSpeed = 160;        // Speed for right motor (0-255)
+unsigned long travelTime = 1250;  // Time (ms) the car moves before stopping
+unsigned long pauseTime = 10;   // Pause delay (ms) after stepper rotation
+int numberOfCycles = 9;           // Number of cycles to run
 
 // -----------------------
 // Motor Control Functions
 // -----------------------
-void moveForward() {
+void moveForward(int leftSpeed, int rightSpeed) {
   digitalWrite(leftMotorPin1, HIGH);
   digitalWrite(leftMotorPin2, LOW);
   digitalWrite(rightMotorPin1, HIGH);
   digitalWrite(rightMotorPin2, LOW);
 
-  analogWrite(leftMotorSpeedPin, leftMotorSpeed);
-  analogWrite(rightMotorSpeedPin, rightMotorSpeed);
+  analogWrite(leftMotorSpeedPin, leftSpeed);
+  analogWrite(rightMotorSpeedPin, rightSpeed);
 }
 
 void stopCar() {
@@ -60,11 +57,13 @@ void stopCar() {
 // -----------------------
 // Stepper Motor Function
 // -----------------------
-void rotateStepperMotor(int rotationDegrees) {
-  int steps = stepsPer180Degrees * rotationDegrees / 180;
-	myStepper.moveTo(steps);
-	// Move the motor one step
-	myStepper.run();
+void rotateStepperMotor() {
+  delay(500); // Short pause after rotation
+  stepper.moveTo(stepper.currentPosition() + stepsPer180Degrees);
+  while (stepper.distanceToGo() != 0) {
+    stepper.run();
+  }
+  delay(500); // Short pause after rotation
 }
 
 // -----------------------
@@ -80,10 +79,10 @@ void setup() {
   pinMode(leftMotorSpeedPin, OUTPUT);
   pinMode(rightMotorSpeedPin, OUTPUT);
 
-  myStepper.setMaxSpeed(1000.0);
-  myStepper.setAcceleration(50.0);
-  myStepper.setSpeed(200);
-  // delay of 4 seconds for testing if the code is working or not
+  stepper.setMaxSpeed(stepperMaxSpeed);
+  stepper.setAcceleration(stepperAcceleration);
+  stepper.setSpeed(stepperSpeed);
+
   delay(4000);
 
   // First stop
@@ -93,7 +92,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Second Stop
@@ -103,7 +102,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Third Stop
@@ -113,7 +112,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Fourth Stop
@@ -123,7 +122,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Fifth Stop
@@ -133,7 +132,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Sixth Stop
@@ -143,7 +142,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Seventh Stop
@@ -153,7 +152,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Eighth Stop
@@ -163,7 +162,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Ninth Stop
@@ -173,7 +172,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 
   // Final Stop
@@ -183,7 +182,7 @@ void setup() {
   stopCar();
   delay(500);
   Serial.println("Car stopped. Rotating stepper motor...");
-  rotateStepperMotor(180);
+  rotateStepperMotor();
   delay(500);
 }
 
